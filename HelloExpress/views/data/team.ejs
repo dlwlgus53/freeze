@@ -1,0 +1,34 @@
+<a href="/data"><button>관리페이지로</button></a>
+
+<h1>Team</h1>
+
+
+<table>
+        <tr>
+            <th>번호</th>
+            <th>이름</th>
+            <th>시간대</th>
+            <th>인원추가</th>
+        </tr>
+        
+        
+        <% var i = 1; %>
+        <% data.forEach(function(data) { %>
+            <tr>
+                    <td><%= i %></td>
+                    <td><%= data.teamname %></td>
+                    <td><%= data.timeid %></td>
+                    <% dlink = "/data/team/deleteteam?tid=" + data.id %>
+                    <% mlink = "/data/teammake?tid=" + data.id %>
+                    <td><a href = "<%= mlink %>"><button>수정</button></a>
+                    </td>
+                    <% i=i+1; %>
+            </tr>
+            
+            <% }) %>
+                
+           
+   
+</table>
+
+</div>

@@ -1,0 +1,31 @@
+<h1>team make</h1>
+
+<div>
+        <form action="/data/teammake/addteam" method="POST">
+            <p>팀이름 : <%= team[0].teamname %> </p>
+            <br/>
+        <% var i =0 %>
+        <% var checked =0 %>       
+
+            <% user.forEach(function(user) { %>    
+                <% checked = 0 %>
+                <% user_t.forEach(function(user_t) { %> 
+                    <% if(user_t.userid == user.user_id){  %>
+                        <input type="checkbox" name="uid" value="<%= user.user_id %>" checked> <%= user.name %> </input>
+                        <% checked = 1%>
+                    <% } %>
+                <% }) %>
+                <% if(checked==0){ %>
+                    <input type="checkbox" name="uid" value="<%= user.user_id %>"> <%= user.name %> </input>
+                <% } %>
+                <% i = i+1 %>
+                <% if(i%10 ==0){ %>
+                    <br/>
+                <% } %>
+
+            <% }) %>
+            <br/>
+            
+        <input type="submit" value="저장하기"/>
+    </form>
+</div>
