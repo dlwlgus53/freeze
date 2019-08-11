@@ -1,11 +1,11 @@
 <a href="/data"><button>관리페이지로</button></a>
 <h1>schedule</h1>
 <% team.forEach(function(team){ %>
-    <% var ulinke = "/data/schedule/update?teamid="+ team.id %>
-    <form action=<%= ulink %></form>method="POST">
+    <% var tlink = "/data/schedule/update?teamname="+ team.teamname %>
+    <form action=<%= tlink %> method="POST">
         <h2><%= team.teamname %></h2>
         <% team_user.forEach(function(team_user){ %>
-            <% if(team_user.teamid == team.id){ %>
+            <% if(team_user.teamid == team.teamid){ %>
                 <p>-<%= team_user.name %></p>
                 <% team_user_time.forEach(function(tut){ %>
                     <% if(team_user.userid == tut.userid){ %>
@@ -20,9 +20,9 @@
         <br />
         <% time.forEach(function(time){ %>   
             <% if(time.timeid == team.timeid){  %>
-                <input type="checkbox" name="uid" value="<%= time.timeid %>" checked> <%= time.timename %> </input>
+                <input type="checkbox" name="timeid" value="<%= time.timeid %>" checked> <%= time.timename %> </input>
             <% }else{ %>
-                <input type="checkbox" name="uid" value="<%= time.timeid %>"> <%= time.timename %> </input>
+                <input type="checkbox" name="timeid" value="<%= time.timeid %>"> <%= time.timename %> </input>
             <% } %>
         <% }) %>
         <br />

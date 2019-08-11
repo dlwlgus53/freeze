@@ -24,7 +24,7 @@ router.get('/time', function(req, res, next) {
 
   sql = 
     // [0] column 1 - 현재까지 저장된 시간
-    "SELECT * FROM fff.times";
+    "SELECT * FROM fff.time_";
 
     connection.query(sql, function(err, query, fields){
       
@@ -33,7 +33,7 @@ router.get('/time', function(req, res, next) {
         console.log("쿼리문에 오류가 있습니다.");
         console.log(err);
       }else{
-        console.log(query);
+        // console.log(query);
         obj = 
         {
           data: query
@@ -47,7 +47,7 @@ router.get('/time', function(req, res, next) {
 router.post('/time/addtime', function(req, res, next) {
   var name = req.body.name;
   var comment = req.body.comment;
-  connection.query("INSERT INTO times ( timename, timecomment) VALUES (?,?)", [
+  connection.query("INSERT INTO time_ ( timename, timecomment) VALUES (?,?)", [
     name, comment
   ], function(err, result) {
     if (err) {
@@ -66,7 +66,7 @@ router.post('/time/deletetime', function(req, res, next) {
   console.log(req.body);
   var tid= req.param("timeid");
   console.log(tid);
-  connection.query("DELETE FROM times WHERE timeid="+String(tid)+";",
+  connection.query("DELETE FROM time_ WHERE timeid="+String(tid)+";",
   function(err, result) {
     if (err) {
       console.log("delete alarm에 에러");
@@ -84,7 +84,7 @@ router.post('/time/deletetime', function(req, res, next) {
 router.get('/team', function(req, res, next) {
   sql = 
     // [0] column 1 - 현재까지 저장된 시간
-    "SELECT * FROM fff.team LEFT JOIN fff.times ON fff.team.timeid = fff.times.timeid";
+    "SELECT * FROM fff.team_time LEFT JOIN fff.time_ ON fff.team_time.timeid = fff.time_.timeid";
     connection.query(sql, function(err, query, fields){
       if (err){
         console.log("쿼리문에 오류가 있습니다.");
@@ -105,7 +105,7 @@ router.get('/teammake', function(req, res, next) {
  
     sql = 
     "SELECT * FROM fff.user_; "
-     + "SELECT * FROM fff.team where id =" + tid + ";"
+     + "SELECT * FROM fff.team_time where teamid =" + tid + ";"
      + "SELECT userid FROM fff.user_team where teamid =" + tid + ";";
 
     connection.query(sql, function(err, query, fields){
@@ -113,7 +113,7 @@ router.get('/teammake', function(req, res, next) {
         console.log("쿼리문에 오류가 있습니다.");
         console.log(err);
       }else{
-       console.log(query)
+      //  console.log(query)
         obj = 
         {
           user: query[0],
@@ -132,13 +132,12 @@ router.get('/teammake', function(req, res, next) {
 
 /* 팀 수정 페이지. 팀원 추가*/
 router.post('/teammake/addteam', function(req, res, next) {
-  console.log(req.body);
+  // console.log(req.body);
   var uid = req.param("uid");
     sql = "delete from user_team where teamid ="+ tid + ";";
     var i=0;
     uid.forEach(function(uid) {
       sql += "insert into user_team (userid, teamid) values(" + uid + ", "+tid+");";
-      
   });
     connection.query(sql, function(err, query, fields){
       if (err){
@@ -156,23 +155,30 @@ router.post('/teammake/addteam', function(req, res, next) {
 router.get('/schedule', function(req, res, next) {
   sql = 
     // [0] team
-    "SELECT * FROM fff.team;" +
+    "SELECT * FROM fff.team_time;" +
     // [1]user_Team
     "SELECT * FROM fff.user_team JOIN fff.user_ on user_team.userid = user_.user_id;" + 
     // [2]user+team+time
-    "SELECT *FROM  fff.times  as times  \
-    JOIN fff.team as team \
-    ON fff.times.timeid = fff.team.timeid \
-    JOIN fff.user_team as ut on  ut.teamid = id;" +
+    "SELECT * FROM\
+      (SELECT timeid, timename, timecomment, ttt.teamid, teamname, id, userid FROM\
+        (SELECT t.timeid, timename, timecomment, tt.teamid, teamname\
+          FROM  fff.time_ AS  t\
+          JOIN fff.team_time AS  tt\
+          on tt.timeid = t.timeid\
+        ) AS ttt\
+        LEFT JOIN fff.user_team AS ut\
+        on  ut.teamid = ttt.teamid \
+      ) AS u\
+    JOIN user_ on u.userid = user_.user_id;"+
     // [3] time
-    "SELECT * FROM fff.times;";
+    "SELECT * FROM fff.time_;";
 
     connection.query(sql, function(err, query, fields){
       if (err){
         console.log("쿼리문에 오류가 있습니다.");
         console.log(err);
       }else{
-        console.log(query)
+         console.log(query)
         obj = 
         {
           team: query[0],
@@ -190,22 +196,24 @@ router.get('/schedule', function(req, res, next) {
 /* 스케쥴 페이지 업데이트 */
 router.post('/schedule/update', function(req, res, next) {
   console.log(req.body);
-  // var uid = req.param("uid");
-  //   sql = "delete from user_team where teamid ="+ tid + ";";
-  //   var i=0;
-  //   uid.forEach(function(uid) {
-  //     sql += "insert into user_team (userid, teamid) values(" + uid + ", "+tid+");";
+  var timeid = req.param("timeid");
+  var teamname = req.param("teamname");
+  
+  sql = "delete from team where teamname ='"+ teamname + "';";//현재 저장되어있는 시간 전체 삭제
+  var i=0;
+  timeid.forEach(function(timeid) {
+    sql += "insert into team (teamname,timeid) values('" + teamname + "', "+timeid+");";
       
-  // });
-  //   connection.query(sql, function(err, query, fields){
-  //     if (err){
-  //       console.log("쿼리문에 오류가 있습니다.");
-  //       console.log(err);
-  //     }else{
-  //       console.log(query);
-  //       res.redirect('/data/team');
-  //     }
-  //   });  
+  });
+    connection.query(sql, function(err, query, fields){
+      if (err){
+        console.log("쿼리문에 오류가 있습니다.");
+        console.log(err);
+      }else{
+        console.log(query);
+        res.redirect('/data/schedule');
+      }
+    });  
 });
 
 

@@ -18,8 +18,8 @@
                     <td><%= i %></td>
                     <td><%= data.teamname %></td>
                     <td><%= data.timeid %></td>
-                    <% dlink = "/data/team/deleteteam?tid=" + data.id %>
-                    <% mlink = "/data/teammake?tid=" + data.id %>
+                    <% dlink = "/data/team/deleteteam?tid=" + data.teamid %>
+                    <% mlink = "/data/teammake?tid=" + data.teamid %>
                     <td><a href = "<%= mlink %>"><button>수정</button></a>
                     </td>
                     <% i=i+1; %>

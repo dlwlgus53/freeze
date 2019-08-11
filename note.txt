@@ -1,1 +1,4 @@
  mysql -u root -p
+
+./ngrok http 3000
+nodemon index.js
