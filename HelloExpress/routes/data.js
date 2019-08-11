@@ -155,7 +155,9 @@ router.post('/teammake/addteam', function(req, res, next) {
 router.get('/schedule', function(req, res, next) {
   sql = 
     // [0] team
-    "SELECT * FROM fff.team_time;" +
+    "SELECT b.teamid, b.teamname, timeid, teamcomment\
+     FROM fff.team_  b LEFT JOIN fff.team_time a \
+      on a.teamid = b.teamid;"+
     // [1]user_Team
     "SELECT * FROM fff.user_team JOIN fff.user_ on user_team.userid = user_.user_id;" + 
     // [2]user+team+time
@@ -171,7 +173,9 @@ router.get('/schedule', function(req, res, next) {
       ) AS u\
     JOIN user_ on u.userid = user_.user_id;"+
     // [3] time
-    "SELECT * FROM fff.time_;";
+    "SELECT * FROM fff.time_;"+
+    // [4] team_
+    "SELECT * FROM fff.team_;";
 
     connection.query(sql, function(err, query, fields){
       if (err){
@@ -184,7 +188,8 @@ router.get('/schedule', function(req, res, next) {
           team: query[0],
           team_user : query[1],
           team_user_time : query[2],
-          time : query[3]
+          time : query[3],
+          team_ : query[4]
         };
         res.render('data/schedule',obj);
       }
@@ -198,12 +203,13 @@ router.post('/schedule/update', function(req, res, next) {
   console.log(req.body);
   var timeid = req.param("timeid");
   var teamname = req.param("teamname");
+  var teamid = req.param("teamid");
+
   
-  sql = "delete from team where teamname ='"+ teamname + "';";//현재 저장되어있는 시간 전체 삭제
+  sql = "delete from team_time where teamname ='"+ teamname + "';";//현재 저장되어있는 시간 전체 삭제
   var i=0;
   timeid.forEach(function(timeid) {
-    sql += "insert into team (teamname,timeid) values('" + teamname + "', "+timeid+");";
-      
+    sql += "insert into team_time (teamid, teamname, timeid) values('"+teamid+"','" + teamname + "', "+timeid+");";
   });
     connection.query(sql, function(err, query, fields){
       if (err){
