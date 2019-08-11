@@ -84,7 +84,7 @@ router.post('/time/deletetime', function(req, res, next) {
 router.get('/team', function(req, res, next) {
   sql = 
     // [0] column 1 - 현재까지 저장된 시간
-    "SELECT * FROM fff.team_time LEFT JOIN fff.time_ ON fff.team_time.timeid = fff.time_.timeid";
+    "SELECT * FROM team_;"; 
     connection.query(sql, function(err, query, fields){
       if (err){
         console.log("쿼리문에 오류가 있습니다.");
@@ -105,7 +105,7 @@ router.get('/teammake', function(req, res, next) {
  
     sql = 
     "SELECT * FROM fff.user_; "
-     + "SELECT * FROM fff.team_time where teamid =" + tid + ";"
+     + "SELECT * FROM fff.team_ where teamid =" + tid + ";"
      + "SELECT userid FROM fff.user_team where teamid =" + tid + ";";
 
     connection.query(sql, function(err, query, fields){
@@ -132,7 +132,7 @@ router.get('/teammake', function(req, res, next) {
 
 /* 팀 수정 페이지. 팀원 추가*/
 router.post('/teammake/addteam', function(req, res, next) {
-  // console.log(req.body);
+   console.log(req.body);
   var uid = req.param("uid");
     sql = "delete from user_team where teamid ="+ tid + ";";
     var i=0;
@@ -182,7 +182,7 @@ router.get('/schedule', function(req, res, next) {
         console.log("쿼리문에 오류가 있습니다.");
         console.log(err);
       }else{
-         console.log(query)
+         //console.log(query)
         obj = 
         {
           team: query[0],
@@ -200,17 +200,28 @@ router.get('/schedule', function(req, res, next) {
 
 /* 스케쥴 페이지 업데이트 */
 router.post('/schedule/update', function(req, res, next) {
-  console.log(req.body);
+  //var timeid = req.body;
   var timeid = req.param("timeid");
   var teamname = req.param("teamname");
   var teamid = req.param("teamid");
-
-  
-  sql = "delete from team_time where teamname ='"+ teamname + "';";//현재 저장되어있는 시간 전체 삭제
+  var timelen = 0;
+  if(timeid == undefined){
+    timelen = 0;
+  }else if(typeof(timeid) == String){//n개
+    timelen = 1;
+  }else{
+    timelen = timeid.length;
+  }
+  sql = "delete from team_time where teamid ='"+ teamid + "';";//현재 저장되어있는 시간 전체 삭제
   var i=0;
-  timeid.forEach(function(timeid) {
+  if(timelen >1){
+    timeid.forEach(function(timeid) {
+      sql += "insert into team_time (teamid, teamname, timeid) values('"+teamid+"','" + teamname + "', "+timeid+");";
+    });
+  }else if(timelen==1){
     sql += "insert into team_time (teamid, teamname, timeid) values('"+teamid+"','" + teamname + "', "+timeid+");";
-  });
+  }
+  
     connection.query(sql, function(err, query, fields){
       if (err){
         console.log("쿼리문에 오류가 있습니다.");
