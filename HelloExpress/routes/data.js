@@ -134,11 +134,24 @@ router.get('/teammake', function(req, res, next) {
 router.post('/teammake/addteam', function(req, res, next) {
    console.log(req.body);
   var uid = req.param("uid");
+  var uidlen = 0;
+  if(uid == undefined){//0명의 팀원 저장
+    uidlen = 0;
+  }else if(typeof(uid) == String){//1명의 팀원 저장
+    uidlen = 1;
+  }else{//n명의 팀원 저장
+    uidlen = uid.length;
+  }
     sql = "delete from user_team where teamid ="+ tid + ";";
-    var i=0;
+
+  if(uidlen==1){
+    sql += "insert into user_team (userid, teamid) values(" + uid + ", "+tid+");";
+  }else if(uidlen>1){
     uid.forEach(function(uid) {
       sql += "insert into user_team (userid, teamid) values(" + uid + ", "+tid+");";
-  });
+    });
+  }
+
     connection.query(sql, function(err, query, fields){
       if (err){
         console.log("쿼리문에 오류가 있습니다.");
