@@ -9,10 +9,11 @@ let client = mysql.createConnection({
   database: "fff"
 })
 
-module.exports = router;
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Freeze 관리자모드' });
 });
 
 module.exports = router;
+
+

@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require("mysql");
+const XLSX = require("xlsx");
+
 var obj = {};
 var tid;
 //var db_config = require('./db_config.json');
@@ -14,10 +16,136 @@ var connection = mysql.createConnection({
 })
 
 
-/* GET users listing. */
+
+module.exports = router;
+
+
+/* GET main page. */
 router.get('/', function(req, res, next) {
   res.render('data');
 });
+
+/* GET data update  */
+router.get('/update', function(req, res, next) {
+  sql = "SELECT * FROM user_;"+
+        "SELECT * FROM team_;"
+  connection.query(sql, function(err, query, fields){
+    if (err){
+      console.log("쿼리문에 오류가 있습니다.");
+      console.log(err);
+    }else{
+      obj = 
+        {
+          user : query[0],
+          team : query[1]
+
+        };
+      res.render('data/update',obj);
+      }
+  });
+});
+
+
+/* update user button*/
+router.get("/update/user", function(req,res,next){
+  let workbook = XLSX.readFile(__dirname + "/../public/name_.xlsx")
+  let worksheet = workbook.Sheets["Sheet1"]
+
+  //console.log(worksheet)
+  let datas = [];
+  // 행의갯수만큼 반복 , 열의갯수만큼 알파벳추가
+  // name_ in public
+  var i;
+  for(i = 1;; i++){
+    if(worksheet["A" + i] == undefined){
+      console.log(i)
+      break;
+    }
+    let obj = {
+      id: worksheet["A" + i].w,
+      name: worksheet["B" + i].w,
+    }
+   
+    datas.push(obj);
+  }
+  console.log(datas);
+ 
+
+  //mysql에 업데이트하기
+  //일단 전부 삭제
+  sql = "DELETE FROM user_;";
+  //하나씩 추가하기
+
+  var len = i-1;
+  console.log(len)
+  if(len==1){
+    sql += "insert into user_ (user_id, name) values('" +datas.id + "', '"+datas.name+"');";
+  }else if(len>1){
+    datas.forEach(function(datas) {
+      sql += "insert into user_ (user_id, name) values('" + datas.id + "', '"+datas.name+"');";
+    });
+  }
+
+  connection.query(sql, function(err, query, fields){
+    if (err){
+      console.log("쿼리문에 오류가 있습니다.");
+      console.log(err);
+    }else{
+      res.redirect('/data/update');
+    }
+  });
+})
+
+/* update team button*/
+router.get("/update/team", function(req,res,next){
+  let workbook = XLSX.readFile(__dirname + "/../public/team.xlsx")
+  let worksheet = workbook.Sheets["Sheet1"]
+
+  //console.log(worksheet)
+  let datas = [];
+  // 행의갯수만큼 반복 , 열의갯수만큼 알파벳추가
+  // name_ in public
+  var i;
+  for(i = 1;; i++){
+    if(worksheet["A" + i] == undefined){
+      console.log(i)
+      break;
+    }
+    let obj = {
+      id: worksheet["A" + i].w,
+      teamname: worksheet["B" + i].w,
+    }
+   
+    datas.push(obj);
+  }
+  console.log(datas);
+ 
+
+  //mysql에 업데이트하기
+  //일단 전부 삭제
+  sql = "DELETE FROM team_;" + 
+        "DELETE FROM team_time;";
+  //하나씩 추가하기
+
+  var len = i-1;
+  console.log(len)
+  if(len==1){
+    sql += "insert into team_ (teamid, teamname) values('" +datas.id + "', '"+datas.teamname+"');";
+  }else if(len>1){
+    datas.forEach(function(datas) {
+      sql += "insert into team_ (teamid, teamname) values('" +datas.id + "', '"+datas.teamname+"');";
+    });
+  }
+
+  connection.query(sql, function(err, query, fields){
+    if (err){
+      console.log("쿼리문에 오류가 있습니다.");
+      console.log(err);
+    }else{
+      res.redirect('/data/update');
+    }
+  });
+})
 
 /*시간수정 페이지*/
 router.get('/time', function(req, res, next) {
@@ -33,10 +161,11 @@ router.get('/time', function(req, res, next) {
         console.log("쿼리문에 오류가 있습니다.");
         console.log(err);
       }else{
-        // console.log(query);
+         console.log(query);
         obj = 
         {
           data: query
+
         };
         res.render('data/time',obj)
       }
