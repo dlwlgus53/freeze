@@ -1,12 +1,62 @@
-<a href="/data"><button>관리페이지로</button></a>
-<h1>update</h1>
-<% user.forEach(function(user){ %>
-    <p><%= user.name %></p>
- <% }) %>
-<button><a href = /data/update/user>동아리원 업데이트 </a></button>
-<% team.forEach(function(team){ %>
-    <p><%= team.teamname %></p>
- <% }) %>
-<button><a href = /data/update/team>팀 업데이트 </a></button>
 
-</div>
+<html>
+    <head>
+        <title>FREEze</title>
+        <link rel='stylesheet' href='/stylesheets/data.css' />
+    </head>
+    <body>
+        <center>
+            <div class = "banner">
+                <p>FREEze</p>
+            </div>
+        
+        <div class = 'menu'>
+            <a href = /data/update>팀, 동아리원 보기, 업데이트 </a>
+            <a href = /data/time>시간,장소 입력</a>
+            <a href = /data/team>팀 구성원 입력</a>
+            <a href = /data/schedule>시간표 짜기 </a>
+            <hr/>
+        </div>
+        <% var i =0 %>
+        <h1>팀, 동아리원 보기, 업데이트</h1>
+        <p id="comment">업데이트 방법 : HelloExpress->public 폴더안에 user, team 폴더 수정 후 업데이트 버튼</p>
+        <h2>동아리원</h2>
+        <div class ="list"%>
+            <% user.forEach(function(user){ %>
+                <span id = "name"><%= user.name %></span>
+                <% i = i+1 %>
+                <% if(i==10){ %>
+                    <br />
+                    <% i =0 %>
+                <% } %>
+            <% }) %>
+        </div>
+        <br/>
+        <br/>
+       
+        <button><a href = /data/update/user>동아리원 업데이트 </a></button>
+        <h2>팀</h2>
+        <% i =0 %>
+        <div class = "list">
+            <% team.forEach(function(team){ %>
+                <span id="name"><%= team.teamname %></span>
+                <% i = i+1 %>
+                <% if(i==10){ %>
+                <br />
+                <% i =0 %>
+            <% } %>
+            <% }) %>
+        </div>
+      
+            <p> 주의 : 초기화됩니다잉</p>
+        <button><a href = /data/update/team>팀 업데이트 </a></button>
+        
+        </div>
+        </center>
+    </body>
+    <div class = "info">
+        <p>이메일 : dlwlgus4553@gmail.com</p>
+        <p>홈페이지 : https://github.com/dlwlgus53</p>
+    </div>
+            
+</html>

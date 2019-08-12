@@ -48,13 +48,12 @@ router.get('/update', function(req, res, next) {
 
 /* update user button*/
 router.get("/update/user", function(req,res,next){
-  let workbook = XLSX.readFile(__dirname + "/../public/name_.xlsx")
+  let workbook = XLSX.readFile(__dirname + "/../public/user.xlsx")
   let worksheet = workbook.Sheets["Sheet1"]
 
   //console.log(worksheet)
   let datas = [];
   // 행의갯수만큼 반복 , 열의갯수만큼 알파벳추가
-  // name_ in public
   var i;
   for(i = 1;; i++){
     if(worksheet["A" + i] == undefined){
@@ -124,7 +123,9 @@ router.get("/update/team", function(req,res,next){
   //mysql에 업데이트하기
   //일단 전부 삭제
   sql = "DELETE FROM team_;" + 
-        "DELETE FROM team_time;";
+        "DELETE FROM team_time;"+
+        "DELETE FROM user_team;";
+
   //하나씩 추가하기
 
   var len = i-1;
