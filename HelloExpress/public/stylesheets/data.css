@@ -1,21 +1,30 @@
 html{
   font-family: 'Noto Sans KR', sans-serif;
 }
+a{
+  text-decoration : none;
+  color: #65b1b2
+}
+
+a:hover{
+  opacity : 0.7
+}
 body {
   padding: 100px;
 }
 
-a {
+.menu a {
   color : #65b1b2;
-  text-decoration: none;
   margin-right : 10px;
   margin-left : 10px;
   
 }
 
-a:hover{
-  opacity: 0.7;
 
+.banner a{
+  color: white;
+  text-decoration: none;
+  font-size : 20px;
 }
 .banner{
   position: fixed;
@@ -38,13 +47,43 @@ a:hover{
   text-align: center;
   font-size : 12px;
 }
+.list{
+  background-color : #f7f9f8
+}
 .list #name{
   padding : 10px;
   display :  inline-block;
+  border-style: black;
 }
 
 #comment{
   color: grey;
   font-size : 12px;
 
+}
+
+button{
+  font-size : 13px;
+  font-weight : bold;
+  color: #65b1b2;
+  background-color : #f7f9f8;
+  border-color: #008181;
+
+  padding: 10px 20px;
+  cursor : pointer;
+}
+
+table{
+  border-collapse: collapse;
+
+
+}
+th{
+
+  background-color: #f7f9f8
+}
+th, td {
+  padding: 15px;
+  text-align: center;
+  border: 1.5px solid#008181;
 }

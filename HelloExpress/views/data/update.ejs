@@ -7,7 +7,7 @@
     <body>
         <center>
             <div class = "banner">
-                <p>FREEze</p>
+                <a href = '/'><p>FREEze</p> </a>
             </div>
         
         <div class = 'menu'>
@@ -21,22 +21,31 @@
         <h1>팀, 동아리원 보기, 업데이트</h1>
         <p id="comment">업데이트 방법 : HelloExpress->public 폴더안에 user, team 폴더 수정 후 업데이트 버튼</p>
         <h2>동아리원</h2>
+        <a id="update" href = /data/update/user><button>동아리원 업데이트 </button></a>
+        <br/>
+        <br/>
+        
         <div class ="list"%>
-            <% user.forEach(function(user){ %>
-                <span id = "name"><%= user.name %></span>
-                <% i = i+1 %>
-                <% if(i==10){ %>
-                    <br />
-                    <% i =0 %>
-                <% } %>
-            <% }) %>
+                <div class = "list">
+                        <% user.forEach(function(user){ %>
+                            <span id="name">(<%= user.user_id %>) <%= user.name %></span>
+                            <% i = i+1 %>
+                            <% if(i==10){ %>
+                            <br />
+                            <% i =0 %>
+                        <% } %>
+                        <% }) %>
+                    </div>
         </div>
         <br/>
-        <br/>
        
-        <button><a href = /data/update/user>동아리원 업데이트 </a></button>
         <h2>팀</h2>
         <% i =0 %>
+        <p id= 'comment'> 주의 : 팀 시간설정, 팀 구성원 설정이 초기화 됩니다.</p>
+        <button><a href = /data/update/team>팀 업데이트 </a></button>
+        <br/>
+        <br/>
+
         <div class = "list">
             <% team.forEach(function(team){ %>
                 <span id="name"><%= team.teamname %></span>
@@ -47,9 +56,9 @@
             <% } %>
             <% }) %>
         </div>
+        <br/>
       
-            <p> 주의 : 초기화됩니다잉</p>
-        <button><a href = /data/update/team>팀 업데이트 </a></button>
+        
         
         </div>
         </center>

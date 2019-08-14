@@ -1,42 +1,66 @@
-<a href="/data"><button>관리페이지로</button></a>
-<h1>Time</h1>
+<html>
+    <head>
+        <title>FREEze</title>
+        <link rel='stylesheet' href='/stylesheets/data.css' />
+    </head>
+    <body>
+        <center>
+            <div class = "banner">
+                <a href = '/'><p>FREEze</p> </a>
+            </div>
+            <div class = 'menu'>
+                <a href = /data/update>팀, 동아리원 보기, 업데이트 </a>
+                <a href = /data/time>시간,장소 입력</a>
+                <a href = /data/team>팀 구성원 입력</a>
+                <a href = /data/schedule>시간표 짜기 </a>
+                <hr/>
+            </div>
+        <h1>Time</h1>
 
-    <div>
-        <form action="/data/time/addtime" method="POST">
-            <span>시간 <input type="text" name="name" placeholder="시간의 이름을 입력하세요"/></span>
-            <span> 위치 <input type="text" name="comment" placeholder="위치를 입력하세요"/></span>
-            <input type="submit" value="추가하기"/>
-        </form>
-    </div> 
-<h2>목록</h2>
-
-<table>
-        <tr>
-            <th>번호</th>
-            <th>이름</th>
-            <th>위치</th>
-            <th>수정</th>
-        </tr>
-        
-        
-        <% var i = 1; %>
-        <% data.forEach(function(data) { %>
-            
+        <div>
+            <form action="/data/time/addtime" method="POST">
+                <span>시간 <input type="text" name="name" placeholder="시간의 이름을 입력하세요"/></span>
+                <span> 위치 <input type="text" name="comment" placeholder="위치를 입력하세요"/></span>
+                <input type="submit" value="추가하기"/>
+            </form>
+        </div> 
+    <h2>목록</h2>
+    
+    <table>
             <tr>
-                    <td><%= i %></td>
-                    <td><%= data.timename %></td>
-                    <td><%= data.timecomment %></td>
-                    <% link = "/data/time/deletetime?timeid=" + data.timeid %>
-                    <form action=<%= link %> method="POST" >
-                        <td><input type="submit" value="삭제"/></td>
-                    </form>
-                    <% i=i+1; %>
+                <th>번호</th>
+                <th>시간</th>
+                <th>위치</th>
+                <th>삭제</th>
             </tr>
             
-            <% }) %>
+            
+            <% var i = 1; %>
+            <% data.forEach(function(data) { %>
                 
-           
-   
-</table>
+                <tr>
+                        <td><%= i %></td>
+                        <td><%= data.timename %></td>
+                        <td><%= data.timecomment %></td>
+                        <% link = "/data/time/deletetime?timeid=" + data.timeid %>
+                        <form action=<%= link %> method="POST" >
+                            <td><a><input type="submit" value="삭제"/></a></td>
+                        </form>
+                        <% i=i+1; %>
+                </tr>
+                
+                <% }) %>
+                    
+                
+        
+        </table>
+        
+        </div>
+    </center>
+    </body>
+    <div class = "info">
+        <p>이메일 : dlwlgus4553@gmail.com</p>
+        <p>홈페이지 : https://github.com/dlwlgus53</p>
+    </div>
+</html>
 
-</div>

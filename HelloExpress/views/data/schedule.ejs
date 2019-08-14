@@ -1,46 +1,69 @@
-<a href="/data"><button>관리페이지로</button></a>
-<h1>schedule</h1>
-<!-- <% var team_2 = JSON.parse(JSON.stringify( team_)) %> -->
-<% team_.forEach(function(team_){ %>
-    <% var tlink = "/data/schedule/update?teamname="+ team_.teamname +"&teamid=" + team_.teamid %>
-    <form action=<%= tlink %> method="POST">
-        <h2><%= team_.teamname %></h2>
-        <% team_user.forEach(function(team_user){ %>
-            <% if(team_user.teamid == team_.teamid){ %>
-                <p>-<%= team_user.name %></p>
-                <% team_user_time.forEach(function(tut){ %>
-                    <% if(team_user.userid == tut.userid){ %>
-                        <span><%= tut.timename %></span>
-                        <span><%= tut.timecomment %></span>
-                        
+<html>
+    <head>
+        <title>FREEze</title>
+        <link rel='stylesheet' href='/stylesheets/data.css' />
+    </head>
+    <body>
+        <center>
+            <div class = "banner">
+                    <a href = '/'><p>FREEze</p> </a>
+            </div>
+            <div class = 'menu'>
+                <a href = /data/update>팀, 동아리원 보기, 업데이트 </a>
+                <a href = /data/time>시간,장소 입력</a>
+                <a href = /data/team>팀 구성원 입력</a>
+                <a href = /data/schedule>시간표 짜기 </a>
+                <hr/>
+            </div>
+            <a href="/data"><button>관리페이지로</button></a>
+            <h1>schedule</h1>
+            <!-- <% var team_2 = JSON.parse(JSON.stringify( team_)) %> -->
+            <% team_.forEach(function(team_){ %>
+                <% var tlink = "/data/schedule/update?teamname="+ team_.teamname +"&teamid=" + team_.teamid %>
+                <form action=<%= tlink %> method="POST">
+                    <h2><%= team_.teamname %></h2>
+                    <% team_user.forEach(function(team_user){ %>
+                        <% if(team_user.teamid == team_.teamid){ %>
+                            <p>-<%= team_user.name %></p>
+                            <% team_user_time.forEach(function(tut){ %>
+                                <% if(team_user.userid == tut.userid){ %>
+                                    <span><%= tut.timename %></span>
+                                    <span><%= tut.timecomment %></span>
+                                    
+                                    <% } %>
+                            <% }) %>
+                            
                         <% } %>
-                <% }) %>
-                
-            <% } %>
-        <% }) %>
-        <br />
-        <% var checked= [] %>
-            <% time.some(function(time){ %> 
-                <% team.some(function(team){ %>
-                    <% teamidcheck = team.teamid %>
-                    <% if(team_.teamid != team.teamid) {return false; } %>
-                    <% if(time.timeid == team.timeid) { %>
-                        <input type="checkbox" name="timeid" value="<%= time.timeid %>" checked> <%= time.timename %> <%= time.timecomment %> </input>
-                        <% checked.push(time.timeid) %>
-                    <% } %>
-                <% }) %>
+                    <% }) %>
+                    <br />
+                    <% var checked= [] %>
+                        <% time.some(function(time){ %> 
+                            <% team.some(function(team){ %>
+                                <% teamidcheck = team.teamid %>
+                                <% if(team_.teamid != team.teamid) {return false; } %>
+                                <% if(time.timeid == team.timeid) { %>
+                                    <input type="checkbox" name="timeid" value="<%= time.timeid %>" checked> <%= time.timename %> <%= time.timecomment %> </input>
+                                    <% checked.push(time.timeid) %>
+                                <% } %>
+                            <% }) %>
+                        <% }) %>
+                        <% time.some(function(time){ %> 
+                            <% if(!checked.includes(time.timeid)){ %>
+                                <input type="checkbox" name="timeid" value="<%= time.timeid %>"> <%= time.timename %> <%= time.timecomment %> </input>
+                            <% } %>
+                        <% }) %>
+            
+            
+                    <br />
+                    <input type="submit" value="저장하기"/>
+                </form>
             <% }) %>
-            <% time.some(function(time){ %> 
-                <% if(!checked.includes(time.timeid)){ %>
-                    <input type="checkbox" name="timeid" value="<%= time.timeid %>"> <%= time.timename %> <%= time.timecomment %> </input>
-                <% } %>
-            <% }) %>
-
-
-        <br />
-        <input type="submit" value="저장하기"/>
-    </form>
-<% }) %>
-   
-
-</div>
+            </div>
+        </center>
+    </body>
+    <div class = "info">
+        <p>이메일 : dlwlgus4553@gmail.com</p>
+        <p>홈페이지 : https://github.com/dlwlgus53</p>
+    </div>
+    
+</html>

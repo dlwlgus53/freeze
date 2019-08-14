@@ -1,34 +1,52 @@
-<a href="/data"><button>관리페이지로</button></a>
-
-<h1>Team</h1>
-
-
-<table>
-        <tr>
-            <th>번호</th>
-            <th>이름</th>
-            <th>시간대</th>
-            <th>인원추가</th>
-        </tr>
-        
-        
-        <% var i = 1; %>
-        <% data.forEach(function(data) { %>
-            <tr>
-                    <td><%= i %></td>
-                    <td><%= data.teamname %></td>
-                    <td><%= data.timeid %></td>
-                    <% dlink = "/data/team/deleteteam?tid=" + data.teamid %>
-                    <% mlink = "/data/teammake?tid=" + data.teamid %>
-                    <td><a href = "<%= mlink %>"><button>수정</button></a>
-                    </td>
-                    <% i=i+1; %>
-            </tr>
-            
-            <% }) %>
+<html>
+    <head>
+        <title>FREEze</title>
+        <link rel='stylesheet' href='/stylesheets/data.css' />
+    </head>
+    <body>
+        <center>
+            <div class = "banner">
+                    <a href = '/'><p>FREEze</p> </a>
+            </div>
+            <div class = 'menu'>
+                <a href = /data/update>팀, 동아리원 보기, 업데이트 </a>
+                <a href = /data/time>시간,장소 입력</a>
+                <a href = /data/team>팀 구성원 입력</a>
+                <a href = /data/schedule>시간표 짜기 </a>
+                <hr/>
+            </div>
+            <h1>Team</h1>
+            <table>
+                    <tr>
+                        <th>번호</th>
+                        <th>이름</th>
+                        <th>인원추가</th>
+                    </tr>
+                    
+                    
+                    <% var i = 1; %>
+                    <% data.forEach(function(data) { %>
+                        <tr>
+                                <td><%= i %></td>
+                                <td><%= data.teamname %></td>
+                                <% mlink = "/data/teammake?tid=" + data.teamid %>
+                                <td><a href = "<%= mlink %>"><button>수정</button></a>
+                                </td>
+                                <% i=i+1; %>
+                        </tr>
+                        
+                        <% }) %>
+                            
+                        
                 
-           
-   
-</table>
+            </table>
+        </center>
+    </body>
+</html>
+
+<div class = "info">
+    <p>이메일 : dlwlgus4553@gmail.com</p>
+    <p>홈페이지 : https://github.com/dlwlgus53</p>
+</div>
 
 </div>
